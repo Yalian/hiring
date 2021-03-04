@@ -1,10 +1,15 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
+import {action} from '@ember/object';
 
 export default class CandidatesController extends Controller {
-
   @action
-  addNew () {
-    alert('Not implemented')
+  addNew() {
+    if (this.name && this.age) {
+      const candidate = this.store.createRecord('Applicant', {
+        name: this.name,
+        age: this.age,
+      });
+      candidate.save();
+    }
   }
 }

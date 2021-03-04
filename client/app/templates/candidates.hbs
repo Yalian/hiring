@@ -6,10 +6,21 @@
 {{#each model as |applicant|}}
 <div>
   <h2>{{applicant.name}}</h2>
-  <p>Age: {{applicant.name}}</p>
+  <p>Age: {{applicant.age}}</p>
 </div>
 {{else}}
 <div>No records found</div>
 {{/each}}
 
-<button {{on 'click' (action 'addNew')}} >Add new</button>
+
+Add New
+
+<form {{ action 'addNew' on="submit" }}>
+  {{ input type="text" placeholder="Ingrese su nombre" value=this.name }} <br>
+
+  {{ input type="number" placeholder="Ingrese su edad" value=this.age }}
+
+  {{ input type="submit" value="Create" }}
+</form>
+
+{{!-- <button {{on 'click' (action 'addNew')}} >Add new</button> --}}
