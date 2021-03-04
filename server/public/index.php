@@ -90,20 +90,25 @@ $app->post(
         );
 
         $response = new Response();
+        $response->setContentType('application/json', 'UTF-8');
 
         if (!$status->success()) {
             $response->setStatusCode(409, 'Conflict');
 
             $errors = [];
             foreach ($status->getMessages() as $message) {
-                $errors[] = $message->getMessage();
+                $errors[] = [
+                    'detail' => $message->getMessage(),
+                    'source' => [
+                        'pointer' => $message->getField()
+                    ],
+                ];
             }
 
-            $response->setJsonContent(
-                [
-                    'status' => 'ERROR',
-                    'messages' => $errors,
-                ]
+            $response->setContent(
+                json_encode([
+                    'errors' => $errors,
+                ])
             );
 
             return $response;
@@ -113,8 +118,8 @@ $app->post(
 
         $attributes->id = $status->getModel()->id;
 
-        $response->setJsonContent(
-            [
+        $response->setContent(
+            json_encode([
                 'data' => [
                     'type' => 'applicant',
                     'id' => $attributes->id,
@@ -123,7 +128,7 @@ $app->post(
                         'age' => $attributes->age,
                     ]
                 ]
-            ]
+            ])
         );
         return $response;
     }
